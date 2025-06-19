@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +29,12 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
+    private boolean enabled = false;
+
+    private String otp;
+
+    private LocalDateTime otpGeneratedAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
