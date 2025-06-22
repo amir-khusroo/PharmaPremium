@@ -20,27 +20,44 @@ public class UserService {
     private EmailService emailService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     public String register(RegisterRequest request) {
         Optional<User> existingUser=userRepository.findByEmail(request.getEmail());
-        if (existingUser.isPresent() && existingUser.get().isEnabled()) {
-            return "Username already exists!";
+        String otp = generateOtp();
+        User newUser;
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            if(user.isEnabled()){
+                return "Username already exists!";
+            }else{
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+                user.setName(request.getName());
+                user.setOtp(otp);
+                user.setOtpGeneratedAt(LocalDateTime.now());
+                user.setRole(request.getRole());
+                user.setEnabled(false); // Make sure it's still disabled
+                newUser = user;
+            }
+
+        }else{
+            newUser = User.builder()
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .name(request.getName())
+                    .otp(otp)
+                    .enabled(false)
+                    .otpGeneratedAt(LocalDateTime.now())
+                    .role(request.getRole())
+                    .build();
         }
 
-        String otp = generateOtp();
 
-        User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .name(request.getName())
-                .otp(otp)
-                .enabled(false)
-                .otpGeneratedAt(LocalDateTime.now())
-                .role(request.getRole())
-                .build();
 
-        userRepository.save(user);
+
+
+        userRepository.save(newUser);
         emailService.sendEmail(
-                user.getEmail(),
+                newUser.getEmail(),
                 "Your PharmaPremium OTP",
                 "Your OTP is: " + otp + "\nValid for 5 minutes."
         );
@@ -50,6 +67,7 @@ public class UserService {
 
     public User authenticate(String email, String rawPassword) {
         return userRepository.findByEmail(email)
+                .filter(user -> user.isEnabled())
                 .filter(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
                 .orElse(null);
     }

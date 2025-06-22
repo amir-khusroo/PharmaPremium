@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.premium.pharma.model.PlanName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,10 +28,12 @@ public class Subscription {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private String planName;
+    @Enumerated(EnumType.STRING)
+    private PlanName planName;
+
     private BigDecimal price;
 
     public boolean isActive() {
-        return LocalDate.now().isAfter(startDate) && LocalDate.now().isBefore(endDate);
+        return !LocalDate.now().isBefore(startDate) && !LocalDate.now().isAfter(endDate);
     }
 }

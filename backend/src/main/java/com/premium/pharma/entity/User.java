@@ -6,8 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -30,6 +35,9 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    private Subscription subscription;
+
     private boolean enabled = false;
 
     private String otp;
@@ -38,4 +46,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

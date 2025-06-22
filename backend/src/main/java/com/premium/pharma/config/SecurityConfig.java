@@ -45,7 +45,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorizeRequests ->{
                     authorizeRequests
-                            .requestMatchers("api/auth/login","api/user/register").permitAll()
+                            .requestMatchers("api/auth/**","api/user/**").permitAll()
+                            .requestMatchers("api/medicine/purchase/**").hasRole("PHARMA_PARTNER")
+                            .requestMatchers("/api/patient/subscription/**").hasRole("PATIENT")
+
                             .anyRequest().authenticated();
                 })
                 .exceptionHandling(e->e.authenticationEntryPoint(point))

@@ -6,13 +6,17 @@ import com.premium.pharma.model.Role;
 import com.premium.pharma.repository.SubscriptionRepository;
 import com.premium.pharma.repository.UserRepository;
 import com.premium.pharma.requestDto.SubscriptionRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
 public class SubscriptionService {
+    @Autowired
     private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public Subscription createSubscription(String email, SubscriptionRequest request) {

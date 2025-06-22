@@ -31,10 +31,13 @@ public class SubscriptionController {
     public ResponseEntity<?> buySubscription(@RequestBody SubscriptionRequest subscriptionRequest, Authentication auth){
         try {
             String username = auth.getName();
-            User user=userRepository.findByEmail(username).get();
+            Optional<User> user=userRepository.findByEmail(username);
+            if(user.isEmpty()){
+                return ResponseEntity.status(401).body("Please Login Again!");
+            }
             Subscription sub = subscriptionService.createSubscription(username, subscriptionRequest);
-            File pdf = InvoiceGenerator.generateInvoice(user.getEmail(), subscriptionRequest.getPlanName(), subscriptionRequest.getPrice(), sub.getStartDate(), sub.getEndDate());
-            emailService.sendInvoiceWithAttachment(user.getEmail(), pdf);
+            File pdf = InvoiceGenerator.generateInvoice(user.get().getEmail(), subscriptionRequest.getPlanName(), subscriptionRequest.getPrice(), sub.getStartDate(), sub.getEndDate());
+            emailService.sendInvoiceWithAttachment(user.get().getEmail(), pdf);
             pdf.delete();
 
             return ResponseEntity.ok(sub);
