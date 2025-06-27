@@ -1,7 +1,9 @@
 package com.premium.pharma.controller;
 
+import com.premium.pharma.entity.User;
 import com.premium.pharma.repository.UserRepository;
 import com.premium.pharma.requestDto.RegisterRequest;
+import com.premium.pharma.responseDto.UserDetailResponse;
 import com.premium.pharma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,18 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or expired OTP");
         }
+    }
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDetailResponse> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        UserDetailResponse user1=UserDetailResponse.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .role(user.getRole())
+                .subscription(user.getSubscription())
+                .username(user.getUsername())
+                .build();
+        return ResponseEntity.ok(user1);
     }
 
 }

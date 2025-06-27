@@ -37,9 +37,9 @@ const StickyNavbar = () => {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <Link to='/' className="flex items-center">
           About
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -47,19 +47,19 @@ const StickyNavbar = () => {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Service
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
+        <Link href="/" className="flex items-center">
           Contact
-        </a>
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/dashboard" className="flex items-center text-lg font-semibold text-blue-500 hover:text-blue-700">
+          Dahboard
+        </Link>
       </Typography>
     </ul>
   );

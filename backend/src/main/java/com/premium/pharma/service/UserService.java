@@ -4,6 +4,7 @@ import com.premium.pharma.entity.User;
 import com.premium.pharma.repository.UserRepository;
 import com.premium.pharma.requestDto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,11 @@ public class UserService {
                 "Your OTP is: " + otp + "\nValid for 5 minutes."
         );
         return "OTP is sended in your email!";
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
 

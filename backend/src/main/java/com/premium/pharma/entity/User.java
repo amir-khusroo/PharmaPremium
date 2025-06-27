@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.premium.pharma.model.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class User implements UserDetails {
     private String name;
 
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Subscription subscription;
 
     private boolean enabled = false;

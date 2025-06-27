@@ -18,14 +18,14 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // axios.post('http://localhost:8081/auth/login', formData).then((res) => {
-        //     localStorage.setItem('token', res.data.jwtToken)
-        //     console.log(res.data.jwtToken)
-        // }).catch((err) => {
-        //     console.log("invalid credentials")
-        // })
-        console.log("Form submitted with data:", formData);
-        toast.success("Login successful!");
+        axios.post('http://localhost:8081/api/auth/login', formData).then((res) => {
+            localStorage.setItem('token', res.data.token)
+            toast.success("Login successful!");
+            console.log(res)
+        }).catch((err) => {
+            toast.error("Invalid credentials, please try again.");
+        })
+        
         setFormData({
             email: "",
             password: "",

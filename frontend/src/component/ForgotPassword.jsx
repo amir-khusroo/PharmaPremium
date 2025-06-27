@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     const handleSendOtp = async (e) => {
         e.preventDefault();
         try {
-            //await axios.post("/api/auth/forgot-password", { email });
+            await axios.post("http://localhost:8081/api/auth/forgot-password", { email });
             toast.success("OTP sent to your email!");
             setStep(2);
         } catch (err) {
@@ -47,12 +47,12 @@ const ForgotPassword = () => {
         }
         e.preventDefault();
         try {
-            // const response = await axios.post('http://localhost:8081/user/verify-otp', {
-            //     email: formData.email,
-            //     otp: enteredOtp
-            // });
+            await axios.post('http://localhost:8081/api/auth/verify-otp', {
+                email: email,
+                otp: enteredOtp
+            });
+            console.log("OTP Verified:", enteredOtp);
             toast.success("OTP Verified Successfully!");
-            //console.log("Response:", response.data);
             setStep(3);
 
         } catch (error) {
@@ -70,7 +70,8 @@ const ForgotPassword = () => {
             return;
         }
         try {
-            //const response= await axios.post("/api/auth/reset-password", { email, newPassword });
+            const response= await axios.post("http://localhost:8081/api/auth/reset-password", { email, newPassword });
+            console.log("Password Reset Data:", { email, newPassword });
             toast.success("Password reset successfully!");
             setStep(1);
             setEmail("");
@@ -139,7 +140,7 @@ const ForgotPassword = () => {
                                 {step === 3 && (<form className="mx-auto max-w-xs" onSubmit={handleResetPassword}>
                                     
                                     <input
-                                        className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                                        className="mb-4 w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                                         type="password"
                                         name='password'
                                         placeholder="New Password"
@@ -149,7 +150,7 @@ const ForgotPassword = () => {
                                     <input
                                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                                         type="password"
-                                        name='confirmPassword'
+                                        name='password'
                                         placeholder="Confirm New Password"
                                         value={confirmNewPassword}
                                         onChange={(e) => setConfirmNewPassword(e.target.value)}

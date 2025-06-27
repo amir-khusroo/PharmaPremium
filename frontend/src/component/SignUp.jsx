@@ -26,9 +26,9 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // axios.post('http://localhost:8081/user/register', formData)
-        //   .then((res) => console.log(res.data))
-        //   .catch((err) => console.error("Error:", err));
+        axios.post('http://localhost:8081/api/user/register', formData)
+          .then((res) => console.log(res.data))
+          .catch((err) => console.error("Error:", err));
         setStep(2);
         console.log("Submitted:", formData);
         toast.success("OTP is sended in your email!");
@@ -56,12 +56,11 @@ const SignUp = () => {
             toast.error("Please enter 6-digit OTP");
             return;
         }
-
         try {
-            // const response = await axios.post('http://localhost:8081/user/verify-otp', {
-            //     email: formData.email,
-            //     otp: enteredOtp
-            // });
+            const response = await axios.post('http://localhost:8081/api/user/verify', {
+                email: formData.email,
+                otp: enteredOtp
+            });
 
             toast.success("OTP Verified Successfully!");
             //console.log("Response:", response.data);

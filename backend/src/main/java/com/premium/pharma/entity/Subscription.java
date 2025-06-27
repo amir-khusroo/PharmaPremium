@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.premium.pharma.model.PlanName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Subscription {
     private UUID id;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User patient;
 
