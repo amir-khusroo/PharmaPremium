@@ -30,10 +30,8 @@ public class Subscription {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @Enumerated(EnumType.STRING)
-    private PlanName planName;
-
-    private BigDecimal price;
+    @ManyToOne
+    private SubscriptionType subscriptionType;
 
     public boolean isActive() {
         return !LocalDate.now().isBefore(startDate) && !LocalDate.now().isAfter(endDate);

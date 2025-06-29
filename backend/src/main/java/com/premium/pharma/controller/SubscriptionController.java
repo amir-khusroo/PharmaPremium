@@ -36,9 +36,9 @@ public class SubscriptionController {
                 return ResponseEntity.status(401).body("Please Login Again!");
             }
             Subscription sub = subscriptionService.createSubscription(username, subscriptionRequest);
-            File pdf = InvoiceGenerator.generateInvoice(user.get().getEmail(), subscriptionRequest.getPlanName(), subscriptionRequest.getPrice(), sub.getStartDate(), sub.getEndDate());
-            emailService.sendInvoiceWithAttachment(user.get().getEmail(), pdf);
-            pdf.delete();
+//            File pdf = InvoiceGenerator.generateInvoice(user.get().getEmail(), subscriptionRequest.getPlanName(), subscriptionRequest.getPrice(), sub.getStartDate(), sub.getEndDate());
+//            emailService.sendInvoiceWithAttachment(user.get().getEmail(), pdf);
+//            pdf.delete();
 
             return ResponseEntity.ok(sub);
         }catch (Exception e){

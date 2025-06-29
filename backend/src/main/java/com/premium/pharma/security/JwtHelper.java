@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtHelper {
-    public static final long jwtExpiration = 30 * 24 * 60 * 60 * 1000;
+    public static final long jwtExpiration = 24 * 60 * 60 * 1000;
 
     private String jwtSecret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
 

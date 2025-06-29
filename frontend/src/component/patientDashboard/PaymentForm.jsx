@@ -2,9 +2,26 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const PaymentForm = () => {
+const PaymentForm = ({ setStep , plan }) => {
     const [expiryDate, setExpiryDate] = useState(null);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:8081/api/patient/subscription/buy', plan, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+        }).then((res) => {
+            toast.success("Payment successful!");
+            setStep(2);
+        }).catch((err) => {
+            toast.error("Payment failed. Please try again.");
+        });
+    };
+
 
     return (
         <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -76,6 +93,7 @@ const PaymentForm = () => {
 
                             <button
                                 type="submit"
+                                onClick={handleSubmit}
                                 className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             >
                                 Pay now
@@ -83,20 +101,21 @@ const PaymentForm = () => {
                         </form>
 
                         <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                            <div className="text-xl font-semibold  dark:text-white sm:text-2xl">{plan.planName}<i className="font-medium text-sm text-yellow-600"> Premium</i></div>
                             <div className="space-y-4 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800">
                                 <div className="space-y-2">
                                     <dl className="flex items-center justify-between gap-4">
                                         <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Original price</dt>
-                                        <dd className="text-base font-medium text-gray-900 dark:text-white">₹6,592.00</dd>
+                                        <dd className="text-base font-medium text-gray-900 dark:text-white">{`₹${plan.price.toLocaleString("en-IN")}`}.00</dd>
                                     </dl>
                                     <dl className="flex items-center justify-between gap-4">
                                         <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Savings</dt>
-                                        <dd className="text-base font-medium text-green-500">-₹299.00</dd>
+                                        <dd className="text-base font-medium text-green-500">-₹0.00</dd>
                                     </dl>
                                 </div>
                                 <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
                                     <dt className="text-base font-bold text-gray-900 dark:text-white">Final Price</dt>
-                                    <dd className="text-base font-bold text-gray-900 dark:text-white">₹7,191.00</dd>
+                                    <dd className="text-base font-bold text-gray-900 dark:text-white">{`₹${plan.price.toLocaleString("en-IN")}`}.00</dd>
                                 </dl>
                             </div>
 

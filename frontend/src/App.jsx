@@ -10,6 +10,9 @@ import ForgotPassword from './component/ForgotPassword'
 import  Dashboard  from './component/Dashboard'
 import PaymentSuccess from './component/patientDashboard/PaymentSuccess'
 import PaymentForm from './component/patientDashboard/PaymentForm'
+import GetAllSubscription from './component/patientDashboard/GetAllSubscription'
+import Payment from './component/patientDashboard/Payment'
+import PurchaseMedicine from './component/pharmaPartnerDashboard/PurchaseMedicine'
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-form" element={<PaymentForm />} />
+        <Route path="/get-all-subscription" element={<GetAllSubscription />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/purchase-medicine" element={<PurchaseMedicine />} />
       </Routes>
     </BrowserRouter>
   )

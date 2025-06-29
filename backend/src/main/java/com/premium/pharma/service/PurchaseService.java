@@ -99,11 +99,12 @@ public class PurchaseService {
             return 0;
         }
 
-        PlanName plan = subscription.getPlanName(); // "BASIC", "PREMIUM", etc.
+        PlanName plan = subscription.getSubscriptionType().getPlanName(); // "BASIC", "PREMIUM", etc.
 
         switch (plan) {
-            case BASIC: return totalAmount * 0.10;
-            case PREMIUM: return totalAmount * 0.20;
+            case SILVER: return totalAmount * 0.10;
+            case GOLD: return totalAmount * 0.20;
+            case DIAMOND: return totalAmount * 0.40;
             default: return 0;
         }
     }

@@ -1,6 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const PaymentSuccess = () => {
+const PaymentSuccess = ({ setStep }) => {
+
+  const navigate = useNavigate();
+  
   return (
     <div className="bg-gradient-to-r from-indigo-50 to-purple-50 h-screen flex items-center justify-center">
       <div className="bg-white p-6 md:mx-auto text-center rounded-lg shadow-md max-w-md">
@@ -21,12 +25,12 @@ const PaymentSuccess = () => {
         </p>
         <p>Have a great day!</p>
         <div className="py-10">
-          <a
-            href="#"
+          <button
+            onClick={() => {setStep(1); navigate("/dashboard")}}
             className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-md inline-block"
           >
-            Print
-          </a>
+            Go Back
+          </button>
         </div>
       </div>
     </div>

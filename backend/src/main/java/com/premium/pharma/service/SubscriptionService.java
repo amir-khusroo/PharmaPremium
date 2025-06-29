@@ -1,9 +1,11 @@
 package com.premium.pharma.service;
 
 import com.premium.pharma.entity.Subscription;
+import com.premium.pharma.entity.SubscriptionType;
 import com.premium.pharma.entity.User;
 import com.premium.pharma.model.Role;
 import com.premium.pharma.repository.SubscriptionRepository;
+import com.premium.pharma.repository.SubscriptionTypeRepository;
 import com.premium.pharma.repository.UserRepository;
 import com.premium.pharma.requestDto.SubscriptionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +21,26 @@ public class SubscriptionService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SubscriptionTypeRepository subscriptionTypeRepository;
+
+
     public Subscription createSubscription(String email, SubscriptionRequest request) {
         User patient = userRepository.findByEmail(email)
                 .filter(user -> user.getRole() == Role.PATIENT)
                 .orElseThrow(() -> new RuntimeException("User not found or not a patient"));
 
+        SubscriptionType subscriptionType=subscriptionTypeRepository.findByPlanName(request.getPlanName())
+                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+
         LocalDate start = LocalDate.now();
-        LocalDate end = start.plusDays(request.getDurationInDays());
+        LocalDate end = start.plusDays(subscriptionType.getDurationInDays());
 
         Subscription subscription = Subscription.builder()
                 .patient(patient)
                 .startDate(start)
                 .endDate(end)
-                .planName(request.getPlanName())
-                .price(request.getPrice())
+                .subscriptionType(subscriptionType)
                 .build();
 
         return subscriptionRepository.save(subscription);

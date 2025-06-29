@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = ({ email }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:8081/api/user/${email}`)
@@ -49,7 +51,7 @@ const Dashboard = ({ email }) => {
               </div>
             ) : (
               <div className="flex flex-col items-center">
-                <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
                   Buy Subscription
                 </button>
                 <i>No Active Plan</i>

@@ -21,7 +21,7 @@ const Login = () => {
         axios.post('http://localhost:8081/api/auth/login', formData).then((res) => {
             localStorage.setItem('token', res.data.token)
             toast.success("Login successful!");
-            console.log(res)
+            console.log(res.data.token)
         }).catch((err) => {
             toast.error("Invalid credentials, please try again.");
         })

@@ -12,6 +12,4 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class SubscriptionRequest {
     private PlanName planName;
-    private BigDecimal price;
-    private int durationInDays;
 }
