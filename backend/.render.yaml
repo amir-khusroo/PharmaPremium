@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pharma-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d1iuitur433s73fhustg-a.oregon-postgres.render.com:5432/my_db_m7u1
+      - key: SPRING_DATASOURCE_USERNAME
+        value: my_db_m7u1_user
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: mjViqfT3AE8AbCQfFRFBS4AV8IFvtMjc
+      - key: SPRING_MAIL_USERNAME
+        value: hometutorfinder2025@gmail.com
+      - key: SPRING_MAIL_PASSWORD
+        value: qwvq xvtw axrv paxc
