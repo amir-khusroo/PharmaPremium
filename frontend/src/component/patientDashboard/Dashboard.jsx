@@ -47,11 +47,14 @@ const Dashboard = ({ email }) => {
                 <div className="px-4 py-2  rounded-full text-sm">
                   Validity till - <b>{user.subscription.endDate}</b>
                 </div>
+                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  Upgrade Subscription
+                </button>
 
               </div>
             ) : (
               <div className="flex flex-col items-center">
-                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                   Buy Subscription
                 </button>
                 <i>No Active Plan</i>
@@ -62,7 +65,7 @@ const Dashboard = ({ email }) => {
 
         {/* Purchase History */}
         <div className="px-6 py-4 border-t">
-          <h3 className="text-xl font-semibold mb-2">Purchase History</h3>
+          <h3 className="text-xl font-semibold mb-2">Medicine Purchase History</h3>
           <ul className="space-y-2">
             {/* {profile.purchaseHistory && profile.purchaseHistory.length > 0 ? (
               profile.purchaseHistory.map((item, i) => (

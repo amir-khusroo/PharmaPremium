@@ -36,6 +36,23 @@ public class SubscriptionService {
         LocalDate start = LocalDate.now();
         LocalDate end = start.plusDays(subscriptionType.getDurationInDays());
 
+        Subscription existing = patient.getSubscription();
+        if (existing != null && existing.getSubscriptionType().getPlanName().equals(request.getPlanName())) {
+            start = existing.getStartDate();
+            end = existing.getEndDate().plusDays(subscriptionType.getDurationInDays());
+
+            existing.setStartDate(start);
+            existing.setEndDate(end);
+            return subscriptionRepository.save(existing);
+
+
+        }else if(existing!=null){
+            patient.setSubscription(null);
+            userRepository.save(patient);
+            subscriptionRepository.delete(existing);
+        }
+
+
         Subscription subscription = Subscription.builder()
                 .patient(patient)
                 .startDate(start)

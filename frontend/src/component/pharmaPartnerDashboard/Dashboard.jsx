@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = ({ email }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:8081/api/user/${email}`)
@@ -39,6 +41,7 @@ const Dashboard = ({ email }) => {
                             variant="gradient"
                             size="sm"
                             className="lg:inline-block bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-600 hover:to-blue-800 focus:from-blue-600 focus:to-blue-800 active:from-blue-700 active:to-blue-900 rounded-lg"
+                            onClick={() => navigate("/purchase-medicine")}
                         >
                             <span>Add Patient Purchase</span>
                         </Button>
