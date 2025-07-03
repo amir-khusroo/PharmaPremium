@@ -73,7 +73,7 @@ const StickyNavbar = () => {
             href=""
             className="mr-4 cursor-pointer py-1.5 font-medium"
           >
-            <img src="./src/assets/logo.png" alt="Pharma Premium" className="mr-3 h-10" />
+            <img src="./public/logo1.png" alt="Pharma Premium" className="mr-3 h-10" />
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>

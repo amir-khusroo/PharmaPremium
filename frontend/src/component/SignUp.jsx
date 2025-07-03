@@ -58,7 +58,7 @@ const SignUp = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8081/api/user/verify', {
+            const response = await axios.post(`${API_URL}/api/user/verify`, {
                 email: formData.email,
                 otp: enteredOtp
             });
