@@ -3,6 +3,7 @@ import { use } from "react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const GetAllSubscription = () => {
     const [plans, setPlans] = useState([]);
@@ -13,7 +14,7 @@ const GetAllSubscription = () => {
         "DIAMOND": "bg-[#f3faff]"
     };
     useEffect(() => {
-        axios.get("http://localhost:8081/api/subscription/getAll")
+        axios.get(`${API_URL}/api/subscription/getAll`)
             .then((response) => {
                 setPlans(response.data);
             })

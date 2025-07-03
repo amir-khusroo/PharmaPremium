@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = ({ email }) => {
     const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const Dashboard = ({ email }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:8081/api/user/${email}`)
+        axios.get(`${API_URL}/api/user/${email}`)
             .then((res) => {
                 setUser(res.data);
                 setLoading(false);

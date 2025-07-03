@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8081/api/auth/login', formData).then((res) => {
+        axios.post(`${API_URL}/api/auth/login`, formData).then((res) => {
             localStorage.setItem('token', res.data.token)
             toast.success("Login successful!");
             console.log(res.data.token)

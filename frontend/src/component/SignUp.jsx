@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SignUp = () => {
     const [step, setStep] = useState(1);
@@ -26,7 +27,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:8081/api/user/register', formData)
+        axios.post(`${API_URL}/api/user/register`, formData)
           .then((res) => console.log(res.data))
           .catch((err) => console.error("Error:", err));
         setStep(2);

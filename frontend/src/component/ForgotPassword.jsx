@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ForgotPassword = () => {
     const [step, setStep] = useState(1);
@@ -14,7 +15,7 @@ const ForgotPassword = () => {
     const handleSendOtp = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8081/api/auth/forgot-password", { email });
+            await axios.post(`${API_URL}/api/auth/forgot-password`, { email });
             toast.success("OTP sent to your email!");
             setStep(2);
         } catch (err) {
@@ -47,7 +48,7 @@ const ForgotPassword = () => {
         }
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8081/api/auth/verify-otp', {
+            await axios.post(`${API_URL}/api/auth/verify-otp`, {
                 email: email,
                 otp: enteredOtp
             });
@@ -70,7 +71,7 @@ const ForgotPassword = () => {
             return;
         }
         try {
-            const response= await axios.post("http://localhost:8081/api/auth/reset-password", { email, newPassword });
+            const response= await axios.post(`${API_URL}/api/auth/reset-password`, { email, newPassword });
             console.log("Password Reset Data:", { email, newPassword });
             toast.success("Password reset successfully!");
             setStep(1);

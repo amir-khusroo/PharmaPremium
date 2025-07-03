@@ -4,12 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const PaymentForm = ({ setStep , plan }) => {
     const [expiryDate, setExpiryDate] = useState(null);
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8081/api/patient/subscription/buy', plan, {
+        axios.post(`${API_URL}/api/patient/subscription/buy`, plan, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem('token')}`

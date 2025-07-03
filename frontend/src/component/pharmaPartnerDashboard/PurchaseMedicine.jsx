@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const PurchaseMedicine = () => {
     const [step, setStep] = useState(1);
@@ -31,7 +32,7 @@ const PurchaseMedicine = () => {
 
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
-        axios.get(`http://localhost:8081/api/user/${email}`)
+        axios.get(`${API_URL}/api/user/${email}`)
             .then((res) => {
                 setPatient(res.data);
                 console.log("Patient data:", res.data);
@@ -54,7 +55,7 @@ const PurchaseMedicine = () => {
     };
 
     const handleSendOtp = async () => {
-        axios.post('http://localhost:8081/api/medicine/purchase/request-otp', {}, {
+        axios.post(`${API_URL}/api/medicine/purchase/request-otp`, {}, {
             params: { email },
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const PurchaseMedicine = () => {
             items: items,
         };
         e.preventDefault();
-        axios.post('http://localhost:8081/api/medicine/purchase/confirm', data, {
+        axios.post(`${API_URL}/api/medicine/purchase/confirm`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
