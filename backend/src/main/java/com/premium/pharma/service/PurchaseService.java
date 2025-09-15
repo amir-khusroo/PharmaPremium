@@ -87,6 +87,7 @@ public class PurchaseService {
         try {
             File invoice = InvoiceGenerator.generateBillInvoicePdf(purchase);
             emailService.sendInvoiceWithAttachment(patient.get().getEmail(), invoice);
+            invoice.delete();
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to send invoice email", e);

@@ -29,6 +29,17 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
+    private static final String[] FREE_RESOURCE_URLS = {
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/api-docs",
+            "/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/favicon.ico"
+    };
+
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -48,6 +59,7 @@ public class SecurityConfig {
                             .requestMatchers("api/auth/**","api/user/**","/api/subscription/**").permitAll()
                             .requestMatchers("api/medicine/purchase/**").hasRole("PHARMA_PARTNER")
                             .requestMatchers("api/patient/subscription/**","api/patient/getPurchaseHistory").hasRole("PATIENT")
+                            .requestMatchers(FREE_RESOURCE_URLS).permitAll()
 
                             .anyRequest().authenticated();
                 })
