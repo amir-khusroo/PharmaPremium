@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import PurchaseHistory from "./PurchaseHistory";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = ({ email }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [purchaseHistory, setPurchaseHistory] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +16,15 @@ const Dashboard = ({ email }) => {
             .then((res) => {
                 setUser(res.data);
                 setLoading(false);
-                console.log("User data:", res.data);
+            }).catch((err) => {
+                console.error("Error fetching user data:", err);
+            });
+        axios.get(`${API_URL}/api/medicine/purchase/history`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+            .then((res) => {
+                setPurchaseHistory(res.data);
+                console.log(res.data);
+            }).catch((err) => {
+                console.error("Error fetching purchase history:", err);
             });
     }, [email]);
 
@@ -49,20 +59,15 @@ const Dashboard = ({ email }) => {
                     </div>
                 </div>
 
-                {/* Purchase History */}
+                
                 <div className="px-6 py-4 border-t">
                     <h3 className="text-xl font-semibold mb-2">Purchase History</h3>
                     <ul className="space-y-2">
-                        {/* {profile.purchaseHistory && profile.purchaseHistory.length > 0 ? (
-              profile.purchaseHistory.map((item, i) => (
-                <li key={i} className="p-3 bg-gray-50 rounded-md shadow-sm flex justify-between items-center">
-                  <span>{item.medicineName}</span>
-                  <span className="text-sm text-gray-600">{item.date}</span>
-                </li>
-              ))
-            ) : ( */}
-                        <p className="text-gray-400">No purchases yet.</p>
-                        {/* )} */}
+                        {purchaseHistory && purchaseHistory.length > 0 ? (
+                            <PurchaseHistory items={purchaseHistory} />
+                        ) : (
+                            <p className="text-gray-400">No purchases yet.</p>
+                        )}
                     </ul>
                 </div>
             </div>

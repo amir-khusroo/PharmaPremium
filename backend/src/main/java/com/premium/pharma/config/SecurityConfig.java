@@ -47,7 +47,7 @@ public class SecurityConfig {
                     authorizeRequests
                             .requestMatchers("api/auth/**","api/user/**","/api/subscription/**").permitAll()
                             .requestMatchers("api/medicine/purchase/**").hasRole("PHARMA_PARTNER")
-                            .requestMatchers("api/patient/subscription/**").hasRole("PATIENT")
+                            .requestMatchers("api/patient/subscription/**","api/patient/getPurchaseHistory").hasRole("PATIENT")
 
                             .anyRequest().authenticated();
                 })

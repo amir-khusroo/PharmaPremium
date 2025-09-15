@@ -6,7 +6,10 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.premium.pharma.entity.MedicineItem;
 import com.premium.pharma.entity.Purchase;
+import com.premium.pharma.entity.SubscriptionType;
 import com.premium.pharma.model.PlanName;
+import com.premium.pharma.repository.SubscriptionTypeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -15,12 +18,20 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
-
 public class InvoiceGenerator {
-    public static File generateInvoice(String userEmail, PlanName planName, BigDecimal amount, LocalDate start, LocalDate end) throws Exception {
+
+    @Autowired
+    private  SubscriptionTypeRepository subscriptionTypeRepository;
+
+    public File generateSubscriptionInvoice(String userEmail, PlanName planName, LocalDate start, LocalDate end) throws Exception {
+        SubscriptionType subscriptionType=subscriptionTypeRepository.findByPlanName(planName).orElse(null);
+        if(subscriptionType==null){
+            throw new IllegalArgumentException("Plan with name " + planName + " not found in DB");
+        }
         String fileName = "Invoice_" + userEmail + ".pdf";
         File file = new File(fileName);
 
@@ -34,7 +45,7 @@ public class InvoiceGenerator {
         document.add(new Paragraph(" "));
         document.add(new Paragraph("Customer: " + userEmail));
         document.add(new Paragraph("Plan: " + planName));
-        document.add(new Paragraph("Amount: ₹" + amount));
+        document.add(new Paragraph("Amount: ₹" + subscriptionType.getPrice()));
         document.add(new Paragraph("Validity: " + start + " to " + end));
 
         document.close();

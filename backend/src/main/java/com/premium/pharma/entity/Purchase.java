@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Purchase {
     @ManyToOne
     private User partner;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<MedicineItem> items;
 

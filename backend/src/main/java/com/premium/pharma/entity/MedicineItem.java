@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class MedicineItem {
     private double price;
     private int quantity;
 
+    @JsonBackReference
     @ManyToOne
     private Purchase purchase;
 }

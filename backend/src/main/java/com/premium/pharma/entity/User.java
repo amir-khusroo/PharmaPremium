@@ -1,5 +1,6 @@
 package com.premium.pharma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.premium.pharma.model.Role;
 import jakarta.persistence.*;
@@ -30,6 +31,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -42,6 +44,7 @@ public class User implements UserDetails {
 
     private boolean enabled = false;
 
+    @JsonIgnore
     private String otp;
 
     private LocalDateTime otpGeneratedAt;

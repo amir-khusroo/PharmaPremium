@@ -109,4 +109,12 @@ public class PurchaseService {
             default: return 0;
         }
     }
+
+    public List<Purchase> getAllPurchase(String email) {
+        Optional<User> user=userRepository.findByEmail(email);
+        if(user.isEmpty()){
+            throw new RuntimeException("User not fount with this email");
+        }
+        return purchaseRepository.findByPartner(user.get());
+    }
 }

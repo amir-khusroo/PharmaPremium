@@ -1,6 +1,7 @@
 package com.premium.pharma.controller;
 
 import com.premium.pharma.entity.Subscription;
+import com.premium.pharma.entity.SubscriptionType;
 import com.premium.pharma.entity.User;
 import com.premium.pharma.repository.UserRepository;
 import com.premium.pharma.requestDto.SubscriptionRequest;
@@ -27,6 +28,9 @@ public class SubscriptionController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private InvoiceGenerator invoiceGenerator;
+
     @PostMapping("/buy")
     public ResponseEntity<?> buySubscription(@RequestBody SubscriptionRequest subscriptionRequest, Authentication auth){
         try {
@@ -36,9 +40,9 @@ public class SubscriptionController {
                 return ResponseEntity.status(401).body("Please Login Again!");
             }
             Subscription sub = subscriptionService.createSubscription(username, subscriptionRequest);
-//            File pdf = InvoiceGenerator.generateInvoice(user.get().getEmail(), subscriptionRequest.getPlanName(), subscriptionRequest.getPrice(), sub.getStartDate(), sub.getEndDate());
-//            emailService.sendInvoiceWithAttachment(user.get().getEmail(), pdf);
-//            pdf.delete();
+            File pdf = invoiceGenerator.generateSubscriptionInvoice(user.get().getEmail(), subscriptionRequest.getPlanName(), sub.getStartDate(), sub.getEndDate());
+            emailService.sendInvoiceWithAttachment(user.get().getEmail(), pdf);
+            pdf.delete();
 
             return ResponseEntity.ok(sub);
         }catch (Exception e){

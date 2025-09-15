@@ -3,8 +3,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 const API_URL = import.meta.env.VITE_API_URL;
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext.jsx"
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Login = () => {
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -20,9 +27,9 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`${API_URL}/api/auth/login`, formData).then((res) => {
-            localStorage.setItem('token', res.data.token)
+            login(res.data.token);
             toast.success("Login successful!");
-            console.log(res.data.token)
+            navigate("/dashboard");
         }).catch((err) => {
             toast.error("Invalid credentials, please try again.");
         })

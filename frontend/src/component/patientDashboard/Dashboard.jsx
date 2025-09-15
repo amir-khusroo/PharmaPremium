@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import PurchaseHistory from "./PurchaseHistory";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = ({ email }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [purchaseHistory, setPurchaseHistory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +17,17 @@ const Dashboard = ({ email }) => {
         setUser(res.data);
         setLoading(false);
         console.log("User data:", res.data);
+      }).catch((err) => {
+        console.error("Error fetching user data:", err);
+      });
+
+
+    axios.get(`${API_URL}/api/patient/getPurchaseHistory`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+      .then((res) => {
+        setPurchaseHistory(res.data);
+        console.log(res.data);
+      }).catch((err) => {
+        console.error("Error fetching purchase history:", err);
       });
   }, [email]);
 
@@ -39,45 +52,63 @@ const Dashboard = ({ email }) => {
           </div>
 
 
-          <div className="mt-4">
+          <div className="mt-4 w-full md:w-auto">
             {user.subscription?.active ? (
-              <div>
-                <div className="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm">
-                  Active Subscription: <b>{user.subscription.planName}</b>
-                </div>
-                <div className="px-4 py-2  rounded-full text-sm">
-                  Validity till - <b>{user.subscription.endDate}</b>
-                </div>
-                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                  Upgrade Subscription
-                </button>
+              <div className="p-4 bg-green-50 border border-green-200 rounded-xl shadow-sm">
+                <p className="text-green-700 font-semibold flex items-center">
+                  ✅ Active Subscription
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  Plan: <span className="font-medium text-gray-800">{user.subscription.planName}</span>
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  Valid till:{" "}
+                  <span className="font-medium text-gray-800">
+                    {new Date(user.subscription.endDate).toLocaleDateString()}
+                  </span>
+                </p>
 
+                {/* Buttons row */}
+                <div className="mt-3 flex space-x-3">
+                  <button
+                    onClick={() => navigate("/get-all-subscription")}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  >
+                    Upgrade
+                  </button>
+                  <button
+                    onClick={() => console.log("Cancel subscription clicked")}
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center">
-                <button onClick={() => navigate("/get-all-subscription")} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <div className="p-4 bg-red-50 border border-red-200 rounded-xl shadow-sm text-center">
+                <p className="text-red-700 font-semibold">⚠ No Active Subscription</p>
+                <p className="mt-1 text-sm text-gray-600">Subscribe to access all features.</p>
+                <button
+                  onClick={() => navigate("/get-all-subscription")}
+                  className="mt-3 px-4 py-2 w-full bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
                   Buy Subscription
                 </button>
-                <i>No Active Plan</i>
               </div>
             )}
           </div>
+
+
         </div>
 
-        {/* Purchase History */}
         <div className="px-6 py-4 border-t">
-          <h3 className="text-xl font-semibold mb-2">Medicine Purchase History</h3>
+          <h3 className="text-xl font-semibold mb-2">Purchase History</h3>
           <ul className="space-y-2">
-            {/* {profile.purchaseHistory && profile.purchaseHistory.length > 0 ? (
-              profile.purchaseHistory.map((item, i) => (
-                <li key={i} className="p-3 bg-gray-50 rounded-md shadow-sm flex justify-between items-center">
-                  <span>{item.medicineName}</span>
-                  <span className="text-sm text-gray-600">{item.date}</span>
-                </li>
-              ))
-            ) : ( */}
-            <p className="text-gray-400">No purchases yet.</p>
-            {/* )} */}
+            {purchaseHistory && purchaseHistory.length > 0 ? (
+              <PurchaseHistory items={purchaseHistory} />
+            ) : (
+              <p className="text-gray-400">No purchases yet.</p>
+            )}
           </ul>
         </div>
       </div>

@@ -56,4 +56,10 @@ public class PurchaseController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/history")
+    public ResponseEntity<?> purchaseHistoryOfPartner(Authentication auth){
+        List<Purchase> purchases=purchaseService.getAllPurchase(auth.getName());
+        return  ResponseEntity.ok(purchases);
+    }
+
 }
